@@ -1,0 +1,8 @@
+.DS_Store
+*.orig
+demo2.html
+dist/
+build-artifact.py
+build-reel.py
+images/channel/
+nexora/

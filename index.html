@@ -1,0 +1,1725 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sunhee Bang</title>
+<meta
+  name="description"
+  content="I turn complex business problems into working software — financial tools, data pipelines, autonomous agents, and desktop applications, grounded in more than 25 years of asset-management experience."
+/>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap"
+/>
+
+<style>
+  /* ── Design tokens ──────────────────────────────────────────────────────
+     The Nexora language: white ground, ink-navy foreground, indigo accent,
+     Instrument Serif display over Inter. Light only, like the Nexora page. */
+  :root {
+    color-scheme: light;
+
+    --ground: hsl(0 0% 100%);
+    --surface: hsl(0 0% 100%);
+    --surface-2: hsl(0 0% 96%);
+    --ink: hsl(210 14% 17%);
+    --ink-2: hsl(210 9% 36%);
+    --ink-3: hsl(200 6% 50%);
+    --rule: hsl(0 0% 90%);
+    --rule-strong: hsl(0 0% 84%);
+    --accent: hsl(239 84% 67%);
+    --accent-ink: hsl(239 55% 52%); /* darker indigo for small text on white */
+    --accent-soft: hsl(239 84% 96%);
+
+    --radius: 0.5rem;
+
+    --display: "Instrument Serif", Georgia, serif;
+    --body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --shadow-panel:
+      0 25px 80px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
+    --shadow-card: 0 10px 30px -12px rgba(0, 0, 0, 0.1);
+
+    --measure: 63ch;
+    --gutter: clamp(1.25rem, 4vw, 3rem);
+    --maxw: 72rem;
+  }
+
+  /* ── Base ──────────────────────────────────────────────────────────────── */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p {
+    margin: 0;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Tiny uppercase label + hairline: the device marking each section. */
+  .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .record {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.1rem;
+  }
+
+  section {
+    padding-block: clamp(3.5rem, 8vw, 6rem);
+  }
+  section + section {
+    border-top: 1px solid var(--rule);
+  }
+
+  .lede {
+    max-width: var(--measure);
+    margin-top: 1.5rem;
+    color: var(--ink-2);
+  }
+
+  /* Large section statement: the one-line claim under an eyebrow. */
+  .statement {
+    font-size: clamp(2rem, 4.4vw, 3.1rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 24ch;
+    margin-top: 1.2rem;
+  }
+
+  /* ── Motion ─────────────────────────────────────────────────────────────
+     Nexora's fade-up. Each element sets its own travel, duration and delay. */
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(var(--rise-y, 16px));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .rise {
+    animation: rise var(--rise-d, 0.6s) cubic-bezier(0.25, 0.1, 0.25, 1)
+      var(--rise-delay, 0s) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rise {
+      animation: none;
+    }
+  }
+
+  /* ── Buttons ────────────────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    padding: 0.65rem 1.4rem;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      opacity 0.15s ease;
+  }
+  .btn:hover {
+    background: var(--surface-2);
+  }
+  .btn.primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: hsl(0 0% 100%);
+  }
+  .btn.primary:hover {
+    background: var(--ink);
+    opacity: 0.9;
+  }
+
+  a:focus-visible,
+  .btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ── Navbar ─────────────────────────────────────────────────────────────── */
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem clamp(1.5rem, 5vw, 5rem);
+  }
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  @media (max-width: 767px) {
+    .nav-links {
+      display: none;
+    }
+  }
+  .nav-links a {
+    font-size: 0.875rem;
+    color: var(--ink-3);
+    transition: color 0.15s ease;
+  }
+  .nav-links a:hover {
+    color: var(--ink);
+  }
+  .navbar .btn {
+    padding: 0.5rem 1.25rem;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────────────────── */
+  .hero {
+    /* Full-bleed: break out of .wrap so the forest runs edge to edge. */
+    position: relative;
+    margin-inline: calc(50% - 50vw);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+    padding-bottom: clamp(3rem, 7vw, 5.5rem);
+    padding-inline: var(--gutter);
+  }
+
+  /* Nexora's forest scene: bright sky in the middle where the headline sits,
+     trees at the flanks and under the frosted panel. */
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: var(--maxw);
+  }
+
+  .badge {
+    --rise-y: 10px;
+    --rise-d: 0.5s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 9999px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    padding: 0.375rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--ink-3);
+    margin-bottom: 1.5rem;
+  }
+
+  .headline {
+    --rise-delay: 0.1s;
+    font-size: clamp(2.2rem, 5.2vw, 3.8rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    max-width: 28ch;
+  }
+  .headline em {
+    font-style: italic;
+  }
+
+  .subhead {
+    --rise-delay: 0.2s;
+    margin-top: 1.25rem;
+    font-size: 1.0625rem;
+    line-height: 1.625;
+    color: var(--ink-2);
+    max-width: 650px;
+  }
+
+  .cta-row {
+    --rise-delay: 0.3s;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  /* The frosted panel below the CTAs — Nexora's dashboard slot, holding the
+     portrait and tear sheet instead. */
+  .hero-panel {
+    --rise-y: 30px;
+    --rise-d: 0.8s;
+    --rise-delay: 0.5s;
+    margin-top: clamp(2.25rem, 5vw, 3.5rem);
+    width: 100%;
+    max-width: 47.6rem; /* 56rem - 15% */
+    text-align: left;
+  }
+  .panel-frost {
+    border-radius: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow-panel);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .panel-inner {
+    background: var(--surface);
+    border-radius: calc(var(--radius) + 2px);
+    padding: clamp(1rem, 3vw, 1.75rem);
+    display: grid;
+    grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+    gap: clamp(1.25rem, 4vw, 2.5rem);
+    align-items: center;
+  }
+
+  .portrait {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 22%;
+    border-radius: 0.75rem;
+    background: var(--surface-2);
+  }
+
+  /* The tear sheet: a data record, applied to a person. */
+  .tearsheet dl {
+    margin: 0;
+  }
+  .tearsheet div {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 0.75rem;
+    padding-block: 0.65rem;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .tearsheet div:last-child {
+    border-bottom: 0;
+  }
+  .tearsheet dt {
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .tearsheet dd {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .tearsheet dd b {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ── Current engagement ────────────────────────────────────────────────── */
+  .engagement {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(1.75rem, 5vw, 3.5rem);
+    margin-top: 2.5rem;
+    align-items: start;
+  }
+  .engagement h3 {
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+  .engagement p {
+    color: var(--ink-2);
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .whatidid {
+    border-top: 1px solid var(--rule);
+  }
+  .whatidid ul {
+    margin: 0;
+    padding: 0;
+  }
+  .whatidid li {
+    list-style: none;
+    padding-block: 0.85rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+  .whatidid b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ── Image stream corridor ─────────────────────────────────────────────────
+     Vanilla port of the ImageStreamHero component: two rails of project
+     screenshots ride from behind the screen toward the viewer. The keyframes
+     are generated by script from the same corridor math; every length is in
+     cqw so the shape holds at any container size. */
+  .stream-hero {
+    position: relative;
+    /* clip, not hidden: the 3D-transformed cards must never contribute to
+       document scroll width, or phones get a horizontally panning page. */
+    overflow: clip;
+    contain: paint;
+    container-type: inline-size;
+    height: clamp(21rem, 46vw, 33rem);
+    border: 1px solid hsl(220 25% 18%);
+    border-radius: 1rem;
+    /* Dark theater void: mostly-white project cards read as lit screens
+       flying out of the darkness instead of vanishing into a white panel.
+       Fuchsia hint -> navy -> charcoal, riding the 135deg diagonal. */
+    background: linear-gradient(
+      135deg,
+      hsl(322 75% 26%),
+      hsl(224 55% 10%) 40%,
+      hsl(220 15% 5%)
+    );
+    margin-top: 2.25rem;
+  }
+  .stream-rails {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .stream-3d {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+  .stream-card {
+    position: absolute;
+    overflow: hidden;
+    backface-visibility: hidden;
+    background: var(--surface-2);
+    /* On the dark ground the cards are the light source: a faint white halo
+       plus a hairline edge reads as a glowing screen, not a gray drop shadow. */
+    box-shadow:
+      0 0 0 1px hsl(0 0% 100% / 0.14),
+      0 0 28px hsl(0 0% 100% / 0.12),
+      0 14px 40px -12px hsl(220 30% 4% / 0.8);
+  }
+  .stream-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* Soft dark fog around the headline so the light ink stays readable when
+     bright cards pass behind it. */
+  .stream-scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      46cqw 42% at 50% 45%,
+      hsl(218 28% 9% / 0.9),
+      hsl(218 28% 9% / 0.5) 55%,
+      transparent 80%
+    );
+  }
+  .stream-content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    padding: clamp(1.75rem, 4vw, 3rem) 1.5rem;
+  }
+  .stream-content h3 {
+    font-size: clamp(2rem, 4.6vw, 3.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: hsl(0 0% 98%);
+  }
+  .stream-content h3 em {
+    font-style: italic;
+  }
+  .stream-note {
+    max-width: 40ch;
+    font-size: 0.85rem;
+    color: hsl(215 12% 72%);
+  }
+
+  /* ── Projects ──────────────────────────────────────────────────────────── */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1.1rem;
+    margin-top: 2.5rem;
+    /* Cards keep their natural height. Without this, one card carrying a tall
+       portrait screenshot stretches every card beside it into a half-empty box. */
+    align-items: start;
+  }
+
+  .card {
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    border-radius: 0.75rem;
+    padding: 1.15rem 1.25rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    transition:
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .card:hover {
+    border-color: var(--rule-strong);
+    box-shadow: var(--shadow-card);
+  }
+  .card h3 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+  .card p {
+    font-size: 0.88rem;
+    color: var(--ink-2);
+  }
+
+  .card.featured {
+    grid-column: span 2;
+  }
+  @media (max-width: 46rem) {
+    .card.featured {
+      grid-column: span 1;
+    }
+  }
+
+  /* Video slot. Sized now so dropping the MP4 in later shifts nothing. */
+  .media {
+    aspect-ratio: 1280 / 758;
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    display: grid;
+    place-items: center;
+    margin-bottom: 0.35rem;
+    overflow: hidden;
+  }
+  .media video,
+  .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: var(--surface-2);
+    display: block;
+  }
+  /* Not every capture is a 16:9 browser window. The overlay is a wide strip
+     across the top of the screen; the tray app is a tall narrow panel. Giving
+     each its own ratio avoids letterboxing them inside a 16:9 box. */
+  .media.strip {
+    aspect-ratio: 1280 / 322;
+  }
+  .media.gallery {
+    aspect-ratio: 1600 / 1090;
+  }
+  .media .pending {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+  .tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--ink-3);
+    border: 1px solid var(--rule);
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+  }
+  .note-private {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent-ink);
+  }
+
+  /* The one project you can open rather than watch. Sits with the tags so it
+     reads as card furniture, not a call to action in the middle of the prose. */
+  .card-link {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent-ink);
+    align-self: start;
+  }
+  .card-link:hover {
+    text-decoration: underline;
+  }
+
+  /* ── Card schematics ───────────────────────────────────────────────────────
+     One small diagram per project that has no demo video, drawn in hairline
+     strokes of currentColor, with the accent reserved for the one element the
+     drawing is about. */
+  .dgm {
+    display: block;
+    width: 100%;
+    max-width: 17rem;
+    height: auto;
+    margin: 0.1rem auto 0.55rem;
+    color: var(--ink-2);
+  }
+  .dgm text {
+    font-family: var(--body);
+    font-size: 10.5px;
+    fill: currentColor;
+  }
+  .dgm .sm {
+    font-size: 9px;
+  }
+  .dgm .bx {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1;
+  }
+  .dgm .ln {
+    stroke: currentColor;
+    stroke-width: 1;
+    fill: none;
+  }
+  .dgm .hot {
+    stroke: var(--accent);
+  }
+  .dgm .hotf {
+    fill: var(--accent);
+  }
+  .dgm .hott {
+    fill: var(--accent-ink);
+  }
+  .dgm .dim {
+    opacity: 0.42;
+  }
+
+  /* ── Foundation: earlier career, deliberately compact ──────────────────── */
+  .foundation {
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--rule);
+  }
+  .frole {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding-block: 1.35rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .frole .when {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.3rem;
+  }
+  .frole .org {
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .frole .title {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+  .frole p {
+    color: var(--ink-2);
+    font-size: 0.9rem;
+    margin-top: 0.35rem;
+    max-width: 62ch;
+  }
+
+  .after-roles {
+    margin-top: 1.8rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+  .after-roles a {
+    color: var(--accent-ink);
+    font-weight: 500;
+  }
+  .after-roles a:hover {
+    text-decoration: underline;
+  }
+
+  /* ── Channel ───────────────────────────────────────────────────────────── */
+  .channel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.75rem, 5vw, 3.5rem);
+    align-items: center;
+    margin-top: 2.5rem;
+  }
+  .channel p.channel-quote {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+    line-height: 1.2;
+    font-style: italic;
+    color: var(--ink);
+  }
+  .channel p {
+    color: var(--ink-2);
+    font-size: 0.95rem;
+  }
+  .channel p + p {
+    margin-top: 0.9rem;
+  }
+  .channel .channel-quote + p {
+    margin-top: 1.4rem;
+  }
+  /* Fanned stack of real carousel slides from the channel. The slides carry
+     the same navy->fuchsia palette as the stream corridor, so this is where
+     the section gets its color. */
+  .channel-stack {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: clamp(16rem, 30vw, 22rem);
+  }
+  .channel-stack::before {
+    /* Soft brand glow behind the fan, echoing the corridor gradient. */
+    content: "";
+    position: absolute;
+    inset: 8%;
+    border-radius: 50%;
+    background: radial-gradient(
+      closest-side,
+      hsl(322 75% 60% / 0.22),
+      hsl(239 84% 67% / 0.12) 55%,
+      transparent
+    );
+    filter: blur(18px);
+  }
+  .channel-stack img {
+    grid-area: 1 / 1;
+    width: clamp(11rem, 21vw, 15rem);
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 0.9rem;
+    box-shadow:
+      0 0 0 1px hsl(0 0% 100% / 0.5),
+      0 18px 45px -18px hsl(250 40% 20% / 0.55);
+  }
+  .channel-stack img:nth-child(1) {
+    transform: translateX(-58%) rotate(-7deg) scale(0.92);
+  }
+  .channel-stack img:nth-child(2) {
+    transform: translateX(58%) rotate(6deg) scale(0.92);
+  }
+  .channel-stack img:nth-child(3) {
+    position: relative;
+    transform: rotate(-1.5deg);
+  }
+
+  /* ── Background ────────────────────────────────────────────────────────── */
+  .edu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .edu .deg {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .edu .school {
+    font-size: 0.88rem;
+    color: var(--ink-2);
+  }
+  .toolrow {
+    margin-top: 2.5rem;
+  }
+  .toolrow .list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+  }
+  .tag.strong {
+    background: var(--accent-soft);
+    border-color: transparent;
+    color: var(--accent-ink);
+  }
+
+  /* ── Footer ────────────────────────────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-block: 3rem 4rem;
+  }
+  .foot-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .links a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-2);
+    transition: color 0.15s ease;
+  }
+  .links a:hover {
+    color: var(--ink);
+  }
+  .links small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.72rem;
+    color: var(--ink-3);
+    margin-top: 0.15rem;
+  }
+  .colophon {
+    font-size: 0.75rem;
+    color: var(--ink-3);
+    margin-top: 2.5rem;
+    max-width: 46ch;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 52rem) {
+    .panel-inner {
+      grid-template-columns: 1fr;
+    }
+    .portrait {
+      max-width: 15rem;
+    }
+    .engagement {
+      grid-template-columns: 1fr;
+    }
+    .frole {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+    .channel {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- ── Navbar ───────────────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <span class="logo">Sunhee Bang</span>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#work">Built with AI</a>
+      <a href="#experience">Experience</a>
+      <a href="#now">Current engagement</a>
+      <a
+        href="https://www.linkedin.com/in/sunheebang/"
+        target="_blank"
+        rel="noopener"
+        >LinkedIn</a
+      >
+    </div>
+    <a class="btn primary" href="#contact">Get in touch</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <!-- ── Hero ─────────────────────────────────────────────────────────── -->
+  <header class="hero">
+    <video
+      class="hero-video"
+      src="media/hero-trees.mp4"
+      poster="media/hero-trees.jpg"
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+      tabindex="-1"
+    ></video>
+
+    <div class="hero-content">
+      <p class="badge rise">MBA, PMP &middot; 25+ years in asset management</p>
+
+      <h1 class="headline rise">
+        I turn complex business problems into applications, financial tools, and
+        automated agent workflows <em>that work.</em>
+      </h1>
+
+      <p class="subhead rise">
+        Using Claude Code and Codex, I build financial tools, data pipelines,
+        autonomous agents, workflow automations, and desktop
+        applications&mdash;grounded in more than 25 years of asset-management
+        experience.
+      </p>
+
+      <div class="cta-row rise">
+        <a class="btn primary" href="#work">See what I've built</a>
+        <a class="btn" href="#experience">View my experience</a>
+      </div>
+
+      <!-- The frosted panel that holds Nexora's dashboard holds the tear sheet
+         here: a data record, applied to a person. -->
+      <div class="hero-panel rise">
+        <div class="panel-frost">
+          <div class="panel-inner">
+            <img class="portrait" src="images/portrait.jpg" alt="Sunhee Bang" />
+            <div class="tearsheet">
+              <dl>
+                <div>
+                  <dt>Now</dt>
+                  <dd><b>Senior Consultant</b>, Citisoft</dd>
+                </div>
+                <div>
+                  <dt>Client</dt>
+                  <dd>Global asset manager, <b>$1T+</b> AUM</dd>
+                </div>
+                <div>
+                  <dt>Platforms</dt>
+                  <dd>
+                    <b>OMS</b> &middot; <b>IBOR</b> &middot; ABOR &middot;
+                    collateral &middot; reconciliation
+                  </dd>
+                </div>
+                <div>
+                  <dt>Data</dt>
+                  <dd>
+                    <b>Snowflake</b> &middot; Microsoft SQL Server &middot;
+                    Python
+                  </dd>
+                </div>
+                <div>
+                  <dt>Building</dt>
+                  <dd>
+                    Agents, pipelines and apps with <b>Claude Code</b> &amp;
+                    Codex
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Work ─────────────────────────────────────────────────────────── -->
+  <section id="work">
+    <p class="eyebrow record">Built with AI</p>
+
+    <!-- The stream leads with the work itself: every card is a screenshot of
+         a project further down this section. Rails are injected by script. -->
+    <div class="stream-hero" id="stream-hero">
+      <div class="stream-scrim" aria-hidden="true"></div>
+      <div class="stream-content">
+        <h3>Working tools and workflows,<br /><em>front and center.</em></h3>
+        <p class="stream-note">
+          Every card in the stream is a project from this page &mdash; built
+          with Claude Code.
+        </p>
+      </div>
+    </div>
+
+    <p class="lede">
+      Working tools and workflows I've built with Claude Code — not tutorials or
+      course exercises. The two financial tools run on my own household data, so
+      they're shown as recordings of de-identified builds; every figure on
+      screen is invented. Demonstrating what a tool does without exposing what
+      it holds is part of building it properly.
+    </p>
+
+    <div class="projects">
+      <article class="card featured">
+        <div class="media">
+          <video
+            src="media/retirement-projector.mp4"
+            poster="media/retirement-projector.jpg"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+            aria-label="Screen recording of the retirement projector, running on invented demo figures"
+          ></video>
+        </div>
+        <h3>Household retirement projector</h3>
+        <p>
+          A two-person retirement model with a working tax engine: federal
+          brackets and the standard deduction with the 65+ addition, long-term
+          capital gains stacked on top, Social Security taxed on the
+          provisional-income rule, required minimum distributions, and a state
+          retirement-income exclusion. Withdrawals sequence through taxable,
+          tax-deferred and Roth accounts, with claim-age sliders for both
+          people.
+        </p>
+        <p class="note-private">
+          Shown de-identified · real figures never leave my machine
+        </p>
+        <div class="tags">
+          <span class="tag">JavaScript</span
+          ><span class="tag">tax modelling</span
+          ><span class="tag">SECURE 2.0</span>
+        </div>
+      </article>
+
+      <article class="card featured">
+        <div class="media">
+          <video
+            src="media/expense-dashboard.mp4"
+            poster="media/expense-dashboard.jpg"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+            aria-label="Screen recording of the expense dashboard, running on synthetic data"
+          ></video>
+        </div>
+        <h3>Multi-account expense tracker</h3>
+        <p>
+          Ingests exports from four separate accounts, normalises inconsistent
+          schemas, reconciles and categorises roughly a thousand transactions,
+          and strips transfers and card payments so they don't double-count —
+          then renders a year of spending with an audit tally of everything it
+          excluded and why.
+        </p>
+        <p class="note-private">Shown running on synthetic data</p>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">data pipeline</span
+          ><span class="tag">reconciliation</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <svg
+          class="dgm"
+          viewBox="0 0 240 84"
+          role="img"
+          aria-label="A Saturday trigger fans out to three research agents, whose findings merge into one ranked brief"
+        >
+          <defs>
+            <marker
+              id="a1"
+              viewBox="0 0 8 8"
+              refX="7"
+              refY="4"
+              markerWidth="5"
+              markerHeight="5"
+              orient="auto"
+            >
+              <path d="M0 1 L7 4 L0 7 z" fill="currentColor" />
+            </marker>
+          </defs>
+          <text x="0" y="10" class="sm">SAT 06:00</text>
+          <circle cx="6" cy="44" r="3" class="hotf" />
+          <path class="ln hot" d="M10 44 H26" />
+          <path class="ln" d="M26 22 V66" />
+          <path class="ln" d="M26 22 H44 M26 44 H44 M26 66 H44" />
+          <rect class="bx" x="44" y="14" width="52" height="16" rx="2" />
+          <rect class="bx" x="44" y="36" width="52" height="16" rx="2" />
+          <rect class="bx" x="44" y="58" width="52" height="16" rx="2" />
+          <text x="70" y="25" text-anchor="middle" class="sm">news</text>
+          <text x="70" y="47" text-anchor="middle" class="sm">viral</text>
+          <text x="70" y="69" text-anchor="middle" class="sm">money</text>
+          <path class="ln" d="M96 22 H114 M96 44 H114 M96 66 H114" />
+          <path class="ln" d="M114 22 V66" />
+          <path class="ln" d="M114 44 H130" marker-end="url(#a1)" />
+          <rect class="bx" x="136" y="34" width="66" height="20" rx="2" />
+          <text x="169" y="47" text-anchor="middle" class="sm">
+            ranked brief
+          </text>
+        </svg>
+        <h3>Scheduled research agents</h3>
+        <p>
+          Autonomous weekly runs that gather AI and finance developments, judge
+          what's actually worth covering, and hand back a briefed topic list
+          rather than a pile of links.
+        </p>
+        <div class="tags">
+          <span class="tag">agents</span><span class="tag">automation</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <svg
+          class="dgm"
+          viewBox="0 0 240 84"
+          role="img"
+          aria-label="Draft, grade, video and post run in sequence; a draft below the bar loops back to be rewritten"
+        >
+          <defs>
+            <marker
+              id="a2"
+              viewBox="0 0 8 8"
+              refX="7"
+              refY="4"
+              markerWidth="5"
+              markerHeight="5"
+              orient="auto"
+            >
+              <path d="M0 1 L7 4 L0 7 z" fill="currentColor" />
+            </marker>
+          </defs>
+          <rect class="bx" x="0" y="20" width="44" height="18" rx="2" />
+          <rect class="bx" x="64" y="20" width="44" height="18" rx="2" />
+          <rect class="bx" x="128" y="20" width="44" height="18" rx="2" />
+          <rect class="bx" x="192" y="20" width="44" height="18" rx="2" />
+          <text x="22" y="32" text-anchor="middle" class="sm">draft</text>
+          <text x="86" y="32" text-anchor="middle" class="sm">grade</text>
+          <text x="150" y="32" text-anchor="middle" class="sm">video</text>
+          <text x="214" y="32" text-anchor="middle" class="sm">post</text>
+          <path class="ln" d="M44 29 H62" marker-end="url(#a2)" />
+          <path class="ln" d="M108 29 H126" marker-end="url(#a2)" />
+          <path class="ln" d="M172 29 H190" marker-end="url(#a2)" />
+          <path class="ln hot" d="M86 38 V60 H22 V40" marker-end="url(#a2)" />
+          <text x="54" y="72" text-anchor="middle" class="sm hott">
+            below the bar
+          </text>
+        </svg>
+        <h3>Content production pipeline</h3>
+        <p>
+          An end-to-end system: skills that draft in a consistent voice, grade
+          the draft against a rubric, generate the video, and schedule the post.
+          Built to run weekly without me holding it up.
+        </p>
+        <div class="tags">
+          <span class="tag">Claude Code</span><span class="tag">video</span
+          ><span class="tag">scheduling</span>
+        </div>
+      </article>
+
+      <article class="card featured">
+        <div class="media strip">
+          <video
+            src="media/airplane-overlay.mp4"
+            poster="media/airplane-overlay.jpg"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+            aria-label="Screen recording of the overlay: a small dog badge and the current time fly left to right across the desktop"
+          ></video>
+        </div>
+        <h3>Airplane Clock Overlay</h3>
+        <p>
+          A macOS desktop app — a transparent, click-through overlay that flies
+          a small dog-photo badge and the current time across the screen on a
+          timed cycle. Electron, packaged and signed for local install.
+        </p>
+        <div class="tags">
+          <span class="tag">Electron</span><span class="tag">macOS</span>
+        </div>
+      </article>
+
+      <article class="card featured">
+        <div class="media gallery">
+          <img
+            src="media/fitflight.jpg"
+            alt="The FitFlight All Workouts gallery: each day laid out as seven numbered slots, every slot showing an exercise photo with its equipment, weight and sets and reps"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <h3>FitFlight workout reminders</h3>
+        <p>
+          A macOS tray app that paces a workout across the day — seven timed
+          prompts, each opening an illustrated exercise card. Five of the seven
+          marks the day done, and a fully missed day carries forward exactly
+          once, so one slip doesn't quietly become a lost week.
+        </p>
+        <div class="tags">
+          <span class="tag">Electron</span><span class="tag">macOS</span>
+        </div>
+      </article>
+
+      
+      <article class="card">
+        <svg
+          class="dgm"
+          viewBox="0 0 240 84"
+          role="img"
+          aria-label="A shopping brief fans out to search, reviews and price agents running in parallel; a judge merges their findings into one pick"
+        >
+          <defs>
+            <marker
+              id="a7"
+              viewBox="0 0 8 8"
+              refX="7"
+              refY="4"
+              markerWidth="5"
+              markerHeight="5"
+              orient="auto"
+            >
+              <path d="M0 1 L7 4 L0 7 z" fill="currentColor" />
+            </marker>
+          </defs>
+          <rect class="bx" x="0" y="32" width="40" height="20" rx="2" />
+          <text x="20" y="45" text-anchor="middle" class="sm">brief</text>
+          <path class="ln" d="M40 42 H56" />
+          <path class="ln" d="M56 16 V68" />
+          <path class="ln" d="M56 16 H72 M56 42 H72 M56 68 H72" />
+          <rect class="bx" x="72" y="8" width="52" height="16" rx="2" />
+          <rect class="bx" x="72" y="34" width="52" height="16" rx="2" />
+          <rect class="bx" x="72" y="60" width="52" height="16" rx="2" />
+          <text x="98" y="19" text-anchor="middle" class="sm">search</text>
+          <text x="98" y="45" text-anchor="middle" class="sm">reviews</text>
+          <text x="98" y="71" text-anchor="middle" class="sm">price</text>
+          <path class="ln" d="M124 16 H140 M124 42 H140 M124 68 H140" />
+          <path class="ln" d="M140 16 V68" />
+          <path class="ln hot" d="M140 42 H156" marker-end="url(#a7)" />
+          <rect class="bx hot" x="160" y="32" width="36" height="20" rx="2" />
+          <text x="178" y="45" text-anchor="middle" class="sm hott">judge</text>
+          <path class="ln" d="M196 42 H204" marker-end="url(#a7)" />
+          <rect class="bx" x="208" y="32" width="32" height="20" rx="2" />
+          <text x="224" y="45" text-anchor="middle" class="sm">pick</text>
+        </svg>
+        <h3>Multi-agent shopping skill</h3>
+        <p>
+          A Claude Code skill that fans a shopping brief out to parallel agents
+          — searching listings, reading reviews, comparing prices — then a judge
+          pass weighs their findings and hands back one recommendation with the
+          reasoning attached.
+        </p>
+        <div class="tags">
+          <span class="tag">Claude Code</span
+          ><span class="tag">multi-agent</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <svg
+          class="dgm"
+          viewBox="0 0 240 84"
+          role="img"
+          aria-label="Scraped leads narrow through verification to a small ranked set worth contacting"
+        >
+          <defs>
+            <marker
+              id="a5"
+              viewBox="0 0 8 8"
+              refX="7"
+              refY="4"
+              markerWidth="5"
+              markerHeight="5"
+              orient="auto"
+            >
+              <path d="M0 1 L7 4 L0 7 z" fill="currentColor" />
+            </marker>
+          </defs>
+          <rect class="bx" x="0" y="12" width="146" height="15" rx="2" />
+          <rect class="bx" x="0" y="35" width="94" height="15" rx="2" />
+          <rect
+            class="bx hot hotf"
+            x="0"
+            y="58"
+            width="46"
+            height="15"
+            rx="2"
+            opacity=".85"
+          />
+          <text x="154" y="24" class="sm">1,240 scraped</text>
+          <text x="154" y="47" class="sm">780 verified</text>
+          <text x="154" y="70" class="sm hott">96 worth calling</text>
+        </svg>
+        <h3>Lead generation &amp; scoring</h3>
+        <p>
+          Scraping tools that assemble prospect lists, then a classification
+          pass that scores and ranks them so outreach effort goes where it has a
+          chance of landing.
+        </p>
+        <div class="tags">
+          <span class="tag">Apify</span><span class="tag">LLM scoring</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <svg
+          class="dgm"
+          viewBox="0 0 240 84"
+          role="img"
+          aria-label="A PDF statement is parsed into structured rows of date, description and amount"
+        >
+          <defs>
+            <marker
+              id="a6"
+              viewBox="0 0 8 8"
+              refX="7"
+              refY="4"
+              markerWidth="5"
+              markerHeight="5"
+              orient="auto"
+            >
+              <path d="M0 1 L7 4 L0 7 z" fill="currentColor" />
+            </marker>
+          </defs>
+          <rect class="bx" x="4" y="12" width="44" height="58" rx="2" />
+          <path
+            class="ln dim"
+            d="M11 26 H41 M11 34 H41 M11 42 H35 M11 50 H41 M11 58 H29"
+          />
+          <text x="26" y="80" text-anchor="middle" class="sm">PDF</text>
+          <path class="ln" d="M54 40 H82" marker-end="url(#a6)" />
+          <text x="68" y="33" text-anchor="middle" class="sm hott">parse</text>
+          <rect class="bx" x="90" y="18" width="146" height="44" rx="2" />
+          <path class="ln" d="M90 31 H236" />
+          <path class="ln dim" d="M139 18 V62 M188 18 V62" />
+          <text x="114" y="28" text-anchor="middle" class="sm">date</text>
+          <text x="163" y="28" text-anchor="middle" class="sm">desc</text>
+          <text x="212" y="28" text-anchor="middle" class="sm">amt</text>
+          <text x="163" y="80" text-anchor="middle" class="sm">CSV</text>
+        </svg>
+        <h3>Statement parser</h3>
+        <p>
+          Turns PDF statements into clean, structured CSV — the unglamorous step
+          that makes everything downstream possible.
+        </p>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">PDF</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <svg
+          class="dgm"
+          viewBox="0 0 240 84"
+          role="img"
+          aria-label="A one-viewport hero: nav bar, centred badge, headline, subhead and buttons, with a dashboard panel running off the bottom edge and cut off by the viewport"
+        >
+          <path class="ln dim" d="M0 13 H240" />
+          <circle cx="10" cy="6" r="2.5" class="hotf" />
+          <path class="ln dim" d="M196 6 H204 M210 6 H218 M224 6 H232" />
+          <rect class="bx" x="100" y="20" width="40" height="7" rx="3.5" />
+          <rect class="bx" x="66" y="32" width="108" height="9" rx="1" />
+          <rect class="bx" x="88" y="44" width="64" height="9" rx="1" />
+          <path class="ln dim" d="M78 60 H162" />
+          <rect class="bx" x="92" y="66" width="32" height="9" rx="4.5" />
+          <circle class="bx" cx="134" cy="70.5" r="4.5" />
+          <rect class="bx hot" x="38" y="80" width="164" height="22" rx="2" />
+        </svg>
+        <h3>Nexora landing page</h3>
+        <p>
+          A hero built to a written spec rather than a mood board — type scale,
+          motion timings, colour tokens and layout all fixed in advance, then
+          implemented in plain HTML and CSS with no framework underneath. The
+          dashboard behind the fold is coded too, SVG chart and all, so it stays
+          sharp at any size instead of blurring like a screenshot.
+        </p>
+        <p class="note-private">
+          Nexora is a fictional product · every figure invented
+        </p>
+        <a class="card-link" href="nexora/">Open the page →</a>
+        <div class="tags">
+          <span class="tag">HTML/CSS</span><span class="tag">design spec</span
+          ><span class="tag">motion</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── Experience behind the build ──────────────────────────────────── -->
+  <section id="experience">
+    <p class="eyebrow record">Experience behind the build</p>
+    <h2 class="statement">
+      I build faster with AI because I already understand the work.
+    </h2>
+    <p class="lede">
+      Claude Code and Codex accelerate how I create; more than 25 years in asset
+      management shape what I build and how I determine whether it works. My
+      experience spans pricing and valuation, market data, investment
+      operations, data governance, and large-scale platform change.
+    </p>
+    <p class="lede">
+      Fluent in Snowflake and Microsoft SQL Server, I combine industry
+      knowledge, data analysis, and AI-assisted development to automate
+      workflows, strengthen controls, and turn complex requirements into
+      practical solutions.
+    </p>
+  </section>
+
+  <!-- ── Current engagement ───────────────────────────────────────────── -->
+  <section id="now">
+    <p class="eyebrow record">Current engagement</p>
+    <div class="engagement">
+      <div>
+        <h3>
+          Implementing a market-data platform that feeds OMS, IBOR, ABOR, and
+          downstream systems for a global asset servicer
+        </h3>
+        <p>
+          As a Senior Consultant at <b>Citisoft</b>, I work on the market-data
+          layer supporting a global asset servicer&#x27;s investment operating
+          environment&mdash;the flows that supply trading, IBOR, ABOR,
+          collateral management, and reconciliation platforms.
+        </p>
+        <p>
+          When downstream systems disagree, the investigation comes back to the
+          data: where it originated, how it was configured, how it moved, and
+          where it changed. It is a systems problem before it is a finance
+          problem&mdash;many sources, many consuming platforms, and no tolerance
+          for a number that cannot be explained.
+        </p>
+      </div>
+      <div class="whatidid">
+        <ul>
+          <li>
+            <b>Led implementation through every gate</b> — moved data through
+            configuration, business and client acceptance testing, production
+            parallel, and production to a successful go-live.
+          </li>
+          <li>
+            <b>Mapped the operating environment</b> — documented end-to-end
+            global data cycles across the order management, IBOR, accounting,
+            and downstream platforms consuming the data.
+          </li>
+          <li>
+            <b>Root-caused defects with SQL</b> — investigated anomalies across
+            multiple Snowflake schemas and traced security-master and
+            account-configuration failures to their source.
+          </li>
+          <li>
+            <b>Reconciled complete position populations</b> — verified data
+            integrity across conversion accounts rather than relying on samples.
+          </li>
+          <li>
+            <b>Designed the testing approach</b> — developed analytical
+            workflows across asset classes to identify discrepancies during
+            testing instead of after production release.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Foundation ───────────────────────────────────────────────────── -->
+  <section>
+    <p class="eyebrow record">Foundation</p>
+    <p class="lede">
+      Two decades in investment operations before consulting. It's where I
+      learned how these firms actually work — the systems, the data, the
+      controls, and what it costs when a number is wrong.
+    </p>
+
+    <div class="foundation">
+      <article class="frole">
+        <div class="when">2014 — 2023</div>
+        <div>
+          <span class="org">Invesco</span>
+          <span class="title"
+            >Senior Manager — Pricing Governance; Pricing &amp; Corporate
+            Actions</span
+          >
+          <p>
+            Ran a team of 16 with oversight of third-party administrators and
+            custodians. Functional lead on the Eagle STAR implementation and the
+            Aladdin corporate-actions build, and integrated operations through
+            the OppenheimerFunds acquisition. Later owned valuation policy and
+            controls across most global locations, including the SEC Rule 2a-5
+            programme.
+          </p>
+        </div>
+      </article>
+
+      <article class="frole">
+        <div class="when">2006 — 2014</div>
+        <div>
+          <span class="org">Deutsche Bank</span>
+          <span class="title">Vice President — Valuation Services</span>
+          <p>
+            Supervised six analysts running the client valuation control
+            platform across corporate bonds, non-agency RMBS, subprime ABS and
+            non-performing whole loans. Built models for exotic fixed income and
+            handled enquiries from clients, FINRA, BaFin and external audit.
+          </p>
+        </div>
+      </article>
+
+      <article class="frole">
+        <div class="when">2004 — 2006</div>
+        <div>
+          <span class="org">Western Asset Management</span>
+          <span class="title">Supervisor — Pricing</span>
+          <p>
+            Managed five analysts across governments, corporates, MBS, swaps,
+            futures and options.
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <p class="after-roles">
+      Full history and dates on
+      <a
+        href="https://www.linkedin.com/in/sunheebang/"
+        target="_blank"
+        rel="noopener"
+        >LinkedIn →</a
+      >
+    </p>
+  </section>
+
+
+  <!-- ── Background ───────────────────────────────────────────────────── -->
+  <section>
+    <p class="eyebrow record">Background</p>
+    <div class="edu">
+      <div>
+        <p class="deg">MBA, Finance &amp; Statistics</p>
+        <p class="school">NYU Stern School of Business</p>
+      </div>
+      <div>
+        <p class="deg">B.S. Finance</p>
+        <p class="school">USC Marshall School of Business</p>
+      </div>
+      <div>
+        <p class="deg">Project Management Professional</p>
+        <p class="school">PMI — certified since 2018</p>
+      </div>
+    </div>
+
+    <div class="toolrow">
+      <p class="eyebrow">Tools</p>
+      <div class="list">
+        <span class="tag strong">Snowflake</span
+        ><span class="tag strong">Microsoft SQL Server</span
+        ><span class="tag strong">SQL</span>
+        <span class="tag strong">Python</span
+        ><span class="tag strong">Claude Code</span
+        ><span class="tag strong">Copilot</span> <span class="tag">Tableau</span
+        ><span class="tag">R</span> <span class="tag">Aladdin</span>
+        <span class="tag">Eagle STAR</span><span class="tag">Bloomberg</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────── -->
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <p class="eyebrow">Get in touch</p>
+        <p style="margin-top: 0.7rem">
+          <a id="mail" class="btn primary" href="#">Email me</a>
+        </p>
+      </div>
+      <div class="links">
+        <a
+          href="https://www.linkedin.com/in/sunheebang/"
+          target="_blank"
+          rel="noopener"
+          >LinkedIn<small>Full résumé</small></a
+        >
+        <a href="https://github.com/sunhee40" target="_blank" rel="noopener"
+          >GitHub<small>Code</small></a
+        >
+        <a
+          href="https://www.youtube.com/@theCostcoGourmet"
+          target="_blank"
+          rel="noopener"
+          >YouTube<small>@theCostcoGourmet — cooking</small></a
+        >
+      </div>
+    </div>
+    <p class="colophon">
+      Set in Instrument Serif and Inter. Built by hand, with AI, in Atlanta.
+    </p>
+  </div>
+</footer>
+
+<script>
+  // ── Image stream corridor ──────────────────────────────────────────────
+  // Vanilla port of the ImageStreamHero React component. Depth is authored
+  // as apparent size (geometric, so consecutive cards keep a constant size
+  // ratio), the rails open hard early then hold (fan > 1), and a card is
+  // born across the axis so the centre never blinks open. Negative delays
+  // drop every card mid-flight, so the corridor is full on the first frame.
+  (function () {
+    var IMAGES = [
+      "media/retirement-projector.jpg",
+      "media/expense-dashboard.jpg",
+      "media/fitflight.jpg",
+      "media/nexora.jpg",
+      "media/airplane-overlay.jpg",
+    ];
+    // Corridor geometry, in cqw. cardWidth/cardHeight are landscape here —
+    // the screenshots are wide — with birth/exit heights rescaled to keep
+    // the same exit/birth ratio the component's defaults were fitted to.
+    var P = {
+      perspective: 30,
+      cardWidth: 24,
+      cardHeight: 15,
+      cardRadius: 0.5,
+      birthHeight: 1.6,
+      exitHeight: 28,
+      railBirth: -11,
+      railExit: 45,
+      fan: 3.3,
+      turnBirth: 6,
+      turnExit: 28,
+      stops: 24,
+    };
+    var CARDS = 9,
+      SPEED = 18,
+      AXIS = 55;
+
+    function keyframes(dir, name) {
+      var steps = [];
+      for (var s = 0; s <= P.stops; s++) {
+        var u = s / P.stops;
+        var scale =
+          (P.birthHeight / P.cardHeight) *
+          Math.pow(P.exitHeight / P.birthHeight, u);
+        var z = P.perspective * (1 - 1 / scale);
+        var rail =
+          P.railExit - (P.railExit - P.railBirth) * Math.pow(1 - u, P.fan);
+        var turn = P.turnBirth + (P.turnExit - P.turnBirth) * u;
+        steps.push(
+          (u * 100).toFixed(2) +
+            "%{transform:translate3d(" +
+            (dir * rail).toFixed(2) +
+            "cqw,0," +
+            z.toFixed(2) +
+            "cqw) rotateY(" +
+            (-dir * turn).toFixed(2) +
+            "deg)}",
+        );
+      }
+      return "@keyframes " + name + "{" + steps.join("") + "}";
+    }
+
+    var hero = document.getElementById("stream-hero");
+    if (!hero) return;
+
+    var style = document.createElement("style");
+    style.textContent =
+      keyframes(1, "ish-r") +
+      keyframes(-1, "ish-l") +
+      // Pausing rather than disabling keeps the corridor whole: each card
+      // freezes mid-flight as a finished still instead of collapsing.
+      "@media(prefers-reduced-motion:reduce){.stream-card{animation-play-state:paused}}";
+    document.head.appendChild(style);
+
+    var rails = document.createElement("div");
+    rails.className = "stream-rails";
+    rails.setAttribute("aria-hidden", "true");
+    rails.style.perspective = P.perspective + "cqw";
+    rails.style.perspectiveOrigin = "50% " + AXIS + "%";
+
+    var threeD = document.createElement("div");
+    threeD.className = "stream-3d";
+    rails.appendChild(threeD);
+
+    ["ish-r", "ish-l"].forEach(function (name) {
+      for (var i = 0; i < CARDS; i++) {
+        var c = document.createElement("div");
+        c.className = "stream-card";
+        c.style.left = "50%";
+        c.style.top = AXIS + "%";
+        c.style.width = P.cardWidth + "cqw";
+        c.style.height = P.cardHeight + "cqw";
+        c.style.marginLeft = -P.cardWidth / 2 + "cqw";
+        c.style.marginTop = -P.cardHeight / 2 + "cqw";
+        c.style.borderRadius = P.cardRadius + "cqw";
+        c.style.animation = name + " " + SPEED + "s linear infinite";
+        c.style.animationDelay = (-(i * SPEED) / CARDS).toFixed(3) + "s";
+
+        var img = document.createElement("img");
+        // Both rails walk the same sequence, so left mirrors right at
+        // every depth.
+        img.src = IMAGES[i % IMAGES.length];
+        img.alt = "";
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.draggable = false;
+        c.appendChild(img);
+        threeD.appendChild(c);
+      }
+    });
+
+    hero.insertBefore(rails, hero.firstChild);
+  })();
+
+  // Email assembled at runtime so scrapers don't harvest it from the source.
+  (function () {
+    var user = "sunheebang40",
+      host = "gmail.com";
+    var a = document.getElementById("mail");
+    a.href = "mailto:" + user + "@" + host;
+    a.textContent = user + "@" + host;
+  })();
+</script>
