@@ -6,3 +6,8 @@ build-artifact.py
 build-reel.py
 images/channel/
 nexora/
+
+# Impeccable design notes: local only, never publish
+PRODUCT.md
+DESIGN.md
+.impeccable/
