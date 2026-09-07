@@ -3,7 +3,7 @@
 <title>Sunhee Bang</title>
 <meta
   name="description"
-  content="I turn complex business problems into working software — financial tools, data pipelines, autonomous agents, and desktop applications, grounded in more than 25 years of asset-management experience."
+  content="I turn messy investment-operations problems — reconciliation breaks, manual controls, fragile spreadsheets, data-quality issues — into systems that hold. Twenty-five years in asset management, now building the automation on top of it."
 />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +24,10 @@
     --surface-2: hsl(0 0% 96%);
     --ink: hsl(210 14% 17%);
     --ink-2: hsl(210 9% 36%);
-    --ink-3: hsl(200 6% 50%);
+    /* 45%, not 50%: at 50% this lands on #788287, which is 3.9:1 on white and
+       fails WCAG AA for the eyebrows, tear-sheet labels and tags that use it.
+       45% reads as the same quiet gray and clears 4.5:1. */
+    --ink-3: hsl(200 6% 45%);
     --rule: hsl(0 0% 90%);
     --rule-strong: hsl(0 0% 84%);
     --accent: hsl(239 84% 67%);
@@ -356,7 +359,9 @@
     border-bottom: 0;
   }
   .tearsheet dt {
-    font-size: 0.66rem;
+    /* 11px, not 10.56px: the record labels sit at the legibility floor for
+       functional text. The half-pixel is invisible; falling under it isn't. */
+    font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -374,7 +379,7 @@
     color: var(--ink);
   }
 
-  /* ── Current engagement ────────────────────────────────────────────────── */
+  /* ── Two-column record (used by "Who I help") ──────────────────────────── */
   .engagement {
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
@@ -857,6 +862,284 @@
     line-height: 1.6;
   }
 
+  /* ── Case study: problem → approach → result ─────────────────────────────
+     The three steps read as one record, not three cards. Only the result
+     takes the accent — the same rule the card schematics follow, where the
+     highlight is reserved for the one thing the drawing is about. */
+  .casestudy {
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.9rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+  .casestudy > div {
+    margin: 0;
+  }
+  .casestudy dt {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .casestudy dd {
+    margin: 0.75rem 0 0;
+    font-size: 0.92rem;
+    color: var(--ink-2);
+    max-width: 46ch;
+  }
+  .casestudy .result dt {
+    color: var(--accent-ink);
+  }
+  .casestudy .result dd {
+    color: var(--ink);
+  }
+  .casestudy .result b {
+    font-weight: 600;
+  }
+
+  /* ── The shift: before / after ───────────────────────────────────────────
+     One figure, two working days stacked on the same frame. The bar is the
+     day: its length is the time, its split is what the time was spent on.
+     Gray is gathering, indigo is analysis. Because both bars share one frame,
+     the After bar visibly stops short and the returned third shows up as a
+     dashed ghost — "a third shorter" becomes a shape, not a claim. The
+     numerals are set in the display face because they are the argument, not
+     annotation; this is the section's one peak, and the record rules around
+     it stay quiet so the peak reads. */
+  .shift {
+    margin: 2.5rem 0 0;
+  }
+  .shift .day {
+    padding-block: 1.6rem 1.9rem;
+    border-top: 1px solid var(--rule);
+  }
+  .day-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem 2rem;
+  }
+  .shift-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .shift .after .shift-label {
+    color: var(--accent-ink);
+  }
+
+  /* The process, as a row of pills. The one step that changed takes the
+     accent; the arrows are a mask so they inherit the text color. */
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .flow li {
+    display: flex;
+    align-items: center;
+  }
+  .flow li + li::before {
+    content: "";
+    width: 16px;
+    height: 8px;
+    margin: 0 0.3rem;
+    background: var(--ink-3);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 8'%3E%3Cpath d='M0 4H14M11 1l3 3-3 3' fill='none' stroke='%23000' stroke-width='1.1'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 8'%3E%3Cpath d='M0 4H14M11 1l3 3-3 3' fill='none' stroke='%23000' stroke-width='1.1'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+  }
+  .flow span {
+    font-size: 0.78rem;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 9999px;
+    padding: 0.18rem 0.62rem;
+    white-space: nowrap;
+  }
+  .flow .hot span {
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  /* The day. Columns are the split; a third column on the After bar is the
+     time that came back. */
+  .bar {
+    display: grid;
+    gap: 3px;
+    height: clamp(3.5rem, 6vw, 4.75rem);
+    margin-top: 1.15rem;
+  }
+  .seg {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+    padding-inline: clamp(0.6rem, 1.6vw, 1.1rem);
+    border-radius: var(--radius);
+    transform-origin: left center;
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)
+      calc(var(--i, 0) * 0.12s);
+  }
+  .seg b {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 3.2vw, 2.6rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    transition: opacity 0.5s ease calc(0.45s + var(--i, 0) * 0.12s);
+  }
+  .seg.gather {
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    color: var(--ink);
+  }
+  .seg.analyse {
+    /* The deeper indigo, not --accent: white numerals on --accent sit at
+       4.4:1. On this one they clear 4.5:1 with room. */
+    background: var(--accent-ink);
+    color: hsl(0 0% 100%);
+  }
+  .seg.ghost {
+    border: 1px dashed var(--rule-strong);
+    color: var(--ink-3);
+  }
+  .seg.ghost b {
+    font-style: italic;
+  }
+  /* Draw-in, armed by script only when motion is allowed. Without script the
+     bars are simply there. */
+  .shift.pre .seg {
+    transform: scaleX(0);
+  }
+  .shift.pre .seg b {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .seg,
+    .seg b {
+      transition: none;
+    }
+  }
+
+  /* Names under each column, on the same grid. A column too narrow for its
+     name hides it; the legend below still says what the colours mean. */
+  .keys {
+    display: grid;
+    gap: 3px;
+    margin-top: 0.55rem;
+  }
+  .keys > span {
+    container-type: inline-size;
+    min-width: 0;
+    padding-inline: 0.15rem;
+    font-size: 0.78rem;
+    color: var(--ink-2);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .keys .hot {
+    color: var(--accent-ink);
+  }
+  .keys .dim {
+    color: var(--ink-3);
+  }
+  .keys .short {
+    display: none;
+  }
+  @container (max-width: 9.5rem) {
+    .keys .long {
+      display: none;
+    }
+    .keys .short {
+      display: inline;
+    }
+  }
+  @container (max-width: 6rem) {
+    .keys span span {
+      visibility: hidden;
+    }
+  }
+
+  .day-note {
+    margin-top: 1.1rem;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    max-width: 52ch;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1.25rem;
+    margin: 1.4rem 0 0;
+    font-size: 0.78rem;
+    color: var(--ink-3);
+  }
+  .legend .sw {
+    display: inline-block;
+    width: 0.8rem;
+    height: 0.55rem;
+    margin-right: 0.4rem;
+    border-radius: 2px;
+    vertical-align: -1px;
+  }
+  .sw.gather {
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+  }
+  .sw.analyse {
+    background: var(--accent-ink);
+  }
+  .sw.ghost {
+    border: 1px dashed var(--rule-strong);
+  }
+
+  /* The same record, folded into a project card. */
+  .par {
+    margin: 0.2rem 0 0;
+    border-top: 1px solid var(--rule);
+  }
+  .par > div {
+    padding-block: 0.7rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .par > div:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .par dt {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .par dd {
+    margin: 0.3rem 0 0;
+    font-size: 0.85rem;
+    color: var(--ink-2);
+  }
+  .par .result dt {
+    color: var(--accent-ink);
+  }
+  .par .result dd {
+    color: var(--ink);
+  }
+
   @media (max-width: 52rem) {
     .panel-inner {
       grid-template-columns: 1fr;
@@ -866,6 +1149,44 @@
     }
     .engagement {
       grid-template-columns: 1fr;
+    }
+    .casestudy {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .casestudy > div {
+      padding-block: 1.15rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .casestudy > div:first-child {
+      padding-top: 0;
+    }
+    .casestudy > div:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+    .casestudy dd {
+      margin-top: 0.5rem;
+    }
+    .day-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    /* Tighter pills so the four-step row fits a phone in one line. */
+    .flow span {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.48rem;
+    }
+    .flow li + li::before {
+      width: 12px;
+      margin: 0 0.15rem;
+    }
+    .bar {
+      height: 3.25rem;
+      gap: 2px;
+    }
+    .seg {
+      padding-inline: 0.5rem;
     }
     .frole {
       grid-template-columns: 1fr;
@@ -882,9 +1203,9 @@
   <span class="logo">Sunhee Bang</span>
   <div class="nav-right">
     <div class="nav-links">
-      <a href="#work">Built with AI</a>
+      <a href="#solve">What I solve</a>
+      <a href="#work">Work</a>
       <a href="#experience">Experience</a>
-      <a href="#now">Current engagement</a>
       <a
         href="https://www.linkedin.com/in/sunheebang/"
         target="_blank"
@@ -916,20 +1237,18 @@
       <p class="badge rise">MBA, PMP &middot; 25+ years in asset management</p>
 
       <h1 class="headline rise">
-        I turn complex business problems into applications, financial tools, and
-        automated agent workflows <em>that work.</em>
+        I build financial tools and workflow automations <em>that work.</em>
       </h1>
 
       <p class="subhead rise">
-        Using Claude Code and Codex, I build financial tools, data pipelines,
-        autonomous agents, workflow automations, and desktop
-        applications&mdash;grounded in more than 25 years of asset-management
-        experience.
+        Twenty-five years in asset management, now applied with AI&mdash;most
+        recently taking about 70% of the manual data handling out of my
+        client&rsquo;s daily reconciliation.
       </p>
 
       <div class="cta-row rise">
-        <a class="btn primary" href="#work">See what I've built</a>
-        <a class="btn" href="#experience">View my experience</a>
+        <a class="btn primary" href="#case">Read the case study</a>
+        <a class="btn" href="#work">See what I've built</a>
       </div>
 
       <!-- The frosted panel that holds Nexora's dashboard holds the tear sheet
@@ -963,11 +1282,15 @@
                   </dd>
                 </div>
                 <div>
-                  <dt>Building</dt>
+                  <dt>Result</dt>
                   <dd>
-                    Agents, pipelines and apps with <b>Claude Code</b> &amp;
-                    Codex
+                    Manual data handling <b>down ~70%</b>; the reconciliation
+                    day, a third shorter
                   </dd>
+                </div>
+                <div>
+                  <dt>Building</dt>
+                  <dd>Agents, pipelines and apps, <b>AI-assisted</b></dd>
                 </div>
               </dl>
             </div>
@@ -977,9 +1300,183 @@
     </div>
   </header>
 
+  <!-- ── Who I help ───────────────────────────────────────────────────── -->
+  <section id="solve">
+    <p class="eyebrow record">Who I help</p>
+    <div class="engagement">
+      <div>
+        <h3>
+          Investment operations teams carrying a process that only works because
+          someone is holding it together by hand.
+        </h3>
+        <p>
+          Asset managers, asset servicers, and the consultancies working
+          alongside them. Usually the problem isn&rsquo;t that nobody
+          understands the process&mdash;it&rsquo;s that understanding it has
+          become a full-time job, and the people who do are spending the day
+          assembling data instead of acting on it.
+        </p>
+        <p>
+          I have been the person doing that assembling. That is why I know which
+          parts are safe to automate, and which parts are where the judgment
+          actually lives.
+        </p>
+      </div>
+      <div class="whatidid">
+        <ul>
+          <li>
+            <b>Reconciliation breaks</b> &mdash; positions or values that
+            disagree across systems, with no fast way to say which source is
+            wrong.
+          </li>
+          <li>
+            <b>Manual controls</b> &mdash; checks that exist because a person
+            performs them, and quietly lapse when that person is away.
+          </li>
+          <li>
+            <b>Fragile spreadsheets</b> &mdash; a workbook that became
+            production infrastructure without ever being tested like it.
+          </li>
+          <li>
+            <b>Data-quality issues</b> &mdash; security-master and
+            account-configuration errors that only surface downstream, long
+            after they were introduced.
+          </li>
+          <li>
+            <b>Workflow bottlenecks</b> &mdash; a daily cycle where most of the
+            hours go to gathering inputs rather than resolving exceptions.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Case study ───────────────────────────────────────────────────── -->
+  <section id="case">
+    <p class="eyebrow record">Case study</p>
+    <h2 class="statement">
+      AI automation didn&rsquo;t just make the day shorter. It changed what the
+      day is made of.
+    </h2>
+
+    <figure class="shift">
+      <div class="day before">
+        <div class="day-head">
+          <p class="shift-label">Before</p>
+          <ol class="flow" aria-label="The process before">
+            <li><span>sources</span></li>
+            <li><span>by hand</span></li>
+            <li><span>compare</span></li>
+            <li><span>investigate</span></li>
+          </ol>
+        </div>
+        <div
+          class="bar"
+          style="grid-template-columns: 80fr 20fr"
+          role="img"
+          aria-label="Before: the full working day, roughly 80% gathering data and 20% analysis."
+        >
+          <div class="seg gather" style="--i: 0"><b>80%</b></div>
+          <div class="seg analyse" style="--i: 1"><b>20%</b></div>
+        </div>
+        <div
+          class="keys"
+          style="grid-template-columns: 80fr 20fr"
+          aria-hidden="true"
+        >
+          <span><span>gathering data</span></span>
+          <span class="hot"><span>analysis</span></span>
+        </div>
+        <p class="day-note">
+          Most of the day went to assembling data. Breaks surfaced late, after
+          the hours were already spent.
+        </p>
+      </div>
+
+      <div class="day after">
+        <div class="day-head">
+          <p class="shift-label">After</p>
+          <ol class="flow" aria-label="The process after">
+            <li><span>sources</span></li>
+            <li class="hot"><span>automation</span></li>
+            <li><span>exceptions</span></li>
+            <li><span>investigate</span></li>
+          </ol>
+        </div>
+        <div
+          class="bar"
+          style="grid-template-columns: 20fr 47fr 33fr"
+          role="img"
+          aria-label="After AI automation took over the assembly: the same day drawn on the same frame, about a third shorter. Of the time that remains, roughly 30% is gathering and 70% is root-cause analysis; the final third of the frame is empty, the time returned."
+        >
+          <div class="seg gather" style="--i: 0"><b>30%</b></div>
+          <div class="seg analyse" style="--i: 1"><b>70%</b></div>
+          <div class="seg ghost" style="--i: 2"><b>&#8531;</b></div>
+        </div>
+        <div
+          class="keys"
+          style="grid-template-columns: 20fr 47fr 33fr"
+          aria-hidden="true"
+        >
+          <span><span>gathering</span></span>
+          <span class="hot"><span>root-cause analysis</span></span>
+          <span class="dim"
+            ><span class="long">of the day returned</span
+            ><span class="short">returned</span></span
+          >
+        </div>
+        <p class="day-note">
+          AI automation now assembles the data and flags the exceptions. The day
+          is shorter, and spent explaining numbers rather than collecting them.
+        </p>
+      </div>
+
+      <figcaption class="legend">
+        <span><i class="sw gather"></i>gathering data</span>
+        <span><i class="sw analyse"></i>analysis and root-cause work</span>
+        <span><i class="sw ghost"></i>time returned</span>
+      </figcaption>
+    </figure>
+
+    <dl class="casestudy">
+      <div>
+        <dt>Problem</dt>
+        <dd>
+          Positions and valuations arrived from several separate systems, each
+          with its own schema and its own version of the truth. Most of the
+          working day went into assembling that data into something
+          comparable&mdash;before anyone could begin asking whether it was
+          right. Breaks surfaced late, and the investigation started after the
+          hours were already spent.
+        </dd>
+      </div>
+      <div>
+        <dt>Approach</dt>
+        <dd>
+          I built AI-assisted automation to take over the assembly: pulling and
+          normalising across the sources, comparing complete populations rather
+          than samples, and surfacing exceptions instead of waiting to be asked
+          for them. Domain knowledge decided what counted as a break and what
+          was noise. The tooling only made that judgment fast enough to apply
+          every day.
+        </dd>
+      </div>
+      <div class="result">
+        <dt>Result</dt>
+        <dd>
+          About <b>70% of the manual data handling</b> came out of the process,
+          and the day itself got roughly a third shorter. The more useful change
+          was to the hours that remained: they moved from gathering data to
+          troubleshooting and root-cause analysis&mdash;from assembling numbers
+          to explaining them.
+        </dd>
+      </div>
+    </dl>
+  </section>
+
   <!-- ── Work ─────────────────────────────────────────────────────────── -->
   <section id="work">
-    <p class="eyebrow record">Built with AI</p>
+    <p class="eyebrow record">What I've built</p>
 
     <!-- The stream leads with the work itself: every card is a screenshot of
          a project further down this section. Rails are injected by script. -->
@@ -1017,15 +1514,36 @@
           ></video>
         </div>
         <h3>Household retirement projector</h3>
-        <p>
-          A two-person retirement model with a working tax engine: federal
-          brackets and the standard deduction with the 65+ addition, long-term
-          capital gains stacked on top, Social Security taxed on the
-          provisional-income rule, required minimum distributions, and a state
-          retirement-income exclusion. Withdrawals sequence through taxable,
-          tax-deferred and Roth accounts, with claim-age sliders for both
-          people.
-        </p>
+        <dl class="par">
+          <div>
+            <dt>Problem</dt>
+            <dd>
+              Retirement calculators answer the easy question. They ignore the
+              one that decides the outcome: what the tax code does to two people
+              drawing from three account types at different claim ages.
+            </dd>
+          </div>
+          <div>
+            <dt>Approach</dt>
+            <dd>
+              A two-person model with a working tax engine&mdash;federal
+              brackets and the standard deduction with the 65+ addition,
+              long-term capital gains stacked on top, Social Security taxed on
+              the provisional-income rule, required minimum distributions, and a
+              state retirement-income exclusion. Withdrawals sequence through
+              taxable, tax-deferred and Roth accounts, with claim-age sliders
+              for both people.
+            </dd>
+          </div>
+          <div class="result">
+            <dt>Result</dt>
+            <dd>
+              A projection whose every rule can be pointed at and checked, so a
+              claim-age decision rests on a number that was derived rather than
+              guessed.
+            </dd>
+          </div>
+        </dl>
         <p class="note-private">
           Shown de-identified · real figures never leave my machine
         </p>
@@ -1050,13 +1568,34 @@
           ></video>
         </div>
         <h3>Multi-account expense tracker</h3>
-        <p>
-          Ingests exports from four separate accounts, normalises inconsistent
-          schemas, reconciles and categorises roughly a thousand transactions,
-          and strips transfers and card payments so they don't double-count —
-          then renders a year of spending with an audit tally of everything it
-          excluded and why.
-        </p>
+        <dl class="par">
+          <div>
+            <dt>Problem</dt>
+            <dd>
+              Four accounts, four export formats, and no honest view of a year's
+              spending. Categorising by hand collapses at roughly a thousand
+              transactions, and transfers between my own accounts were
+              double-counting as money spent.
+            </dd>
+          </div>
+          <div>
+            <dt>Approach</dt>
+            <dd>
+              A Python pipeline that normalises the four schemas, reconciles and
+              categorises every transaction, then strips transfers and card
+              payments so money moving between my own accounts never reads as
+              expenditure.
+            </dd>
+          </div>
+          <div class="result">
+            <dt>Result</dt>
+            <dd>
+              A year of spending in one view&mdash;published with an audit tally
+              of every transaction it excluded and why, so the total can be
+              checked instead of trusted.
+            </dd>
+          </div>
+        </dl>
         <p class="note-private">Shown running on synthetic data</p>
         <div class="tags">
           <span class="tag">Python</span><span class="tag">data pipeline</span
@@ -1207,7 +1746,6 @@
         </div>
       </article>
 
-      
       <article class="card">
         <svg
           class="dgm"
@@ -1411,60 +1949,6 @@
     </p>
   </section>
 
-  <!-- ── Current engagement ───────────────────────────────────────────── -->
-  <section id="now">
-    <p class="eyebrow record">Current engagement</p>
-    <div class="engagement">
-      <div>
-        <h3>
-          Implementing a market-data platform that feeds OMS, IBOR, ABOR, and
-          downstream systems for a global asset servicer
-        </h3>
-        <p>
-          As a Senior Consultant at <b>Citisoft</b>, I work on the market-data
-          layer supporting a global asset servicer&#x27;s investment operating
-          environment&mdash;the flows that supply trading, IBOR, ABOR,
-          collateral management, and reconciliation platforms.
-        </p>
-        <p>
-          When downstream systems disagree, the investigation comes back to the
-          data: where it originated, how it was configured, how it moved, and
-          where it changed. It is a systems problem before it is a finance
-          problem&mdash;many sources, many consuming platforms, and no tolerance
-          for a number that cannot be explained.
-        </p>
-      </div>
-      <div class="whatidid">
-        <ul>
-          <li>
-            <b>Led implementation through every gate</b> — moved data through
-            configuration, business and client acceptance testing, production
-            parallel, and production to a successful go-live.
-          </li>
-          <li>
-            <b>Mapped the operating environment</b> — documented end-to-end
-            global data cycles across the order management, IBOR, accounting,
-            and downstream platforms consuming the data.
-          </li>
-          <li>
-            <b>Root-caused defects with SQL</b> — investigated anomalies across
-            multiple Snowflake schemas and traced security-master and
-            account-configuration failures to their source.
-          </li>
-          <li>
-            <b>Reconciled complete position populations</b> — verified data
-            integrity across conversion accounts rather than relying on samples.
-          </li>
-          <li>
-            <b>Designed the testing approach</b> — developed analytical
-            workflows across asset classes to identify discrepancies during
-            testing instead of after production release.
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
   <!-- ── Foundation ───────────────────────────────────────────────────── -->
   <section>
     <p class="eyebrow record">Foundation</p>
@@ -1531,7 +2015,6 @@
       >
     </p>
   </section>
-
 
   <!-- ── Background ───────────────────────────────────────────────────── -->
   <section>
@@ -1712,6 +2195,29 @@
     });
 
     hero.insertBefore(rails, hero.firstChild);
+  })();
+
+  // The shift figure draws its bars in the first time it scrolls into view.
+  // Armed only when motion is allowed; without script, or with reduced
+  // motion, the bars are simply there.
+  (function () {
+    var fig = document.querySelector(".shift");
+    if (!fig || !("IntersectionObserver" in window)) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    fig.classList.add("pre");
+    new IntersectionObserver(
+      function (entries, io) {
+        if (
+          entries.some(function (e) {
+            return e.isIntersecting;
+          })
+        ) {
+          fig.classList.remove("pre");
+          io.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    ).observe(fig);
   })();
 
   // Email assembled at runtime so scrapers don't harvest it from the source.
