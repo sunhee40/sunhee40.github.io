@@ -1211,9 +1211,24 @@
       grid-template-columns: 1fr;
     }
   }
+
+  /* ── Dashboard snapshot on the research agents card ── */
+  .dash-snap{border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface-2,hsl(240 20% 98%));padding:.8rem .85rem .9rem;display:grid;gap:.65rem;margin-bottom:.35rem}
+  .dash-snap .ds-t{font-family:var(--display);font-size:1.05rem;line-height:1.1;color:var(--ink)}
+  .dash-snap .ds-k{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem}
+  .dash-snap .ds-k div{background:var(--surface);border:1px solid var(--rule);border-radius:.4rem;padding:.4rem .45rem;display:grid;gap:.1rem;min-width:0}
+  .dash-snap .ds-k b{font-family:var(--display);font-weight:400;font-size:1.35rem;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+  .dash-snap .ds-k span{font-size:.62rem;line-height:1.25;color:var(--ink-3)}
+  .dash-snap .ds-h{font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+  .dash-snap ul{list-style:none;margin:0;padding:0;display:grid;gap:.28rem}
+  .dash-snap li{display:grid;grid-template-columns:6.6rem 1fr 1.8rem;align-items:center;gap:.4rem;font-size:.66rem;color:var(--ink-2)}
+  .dash-snap li i{display:block;height:.45rem;border-radius:9999px;background:var(--accent);opacity:.85}
+  .dash-snap li em{font-style:normal;text-align:right;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
+
+
 
 <!-- ── Navbar ───────────────────────────────────────────────────────────── -->
 <nav class="navbar">
@@ -1517,6 +1532,82 @@
     </p>
 
     <div class="projects">
+
+      <article class="card featured">
+        <div class="media">
+          <video
+            src="media/expense-dashboard.mp4"
+            poster="media/expense-dashboard.jpg"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+            aria-label="Screen recording of the expense dashboard, running on synthetic data"
+          ></video>
+        </div>
+        <h3>Multi-account expense tracker</h3>
+        <dl class="par">
+          <div>
+            <dt>Problem</dt>
+            <dd>
+              Four accounts, four export formats, and no honest view of a year's
+              spending. Categorising by hand collapses at roughly a thousand
+              transactions, and transfers between my own accounts were
+              double-counting as money spent.
+            </dd>
+          </div>
+          <div>
+            <dt>Approach</dt>
+            <dd>
+              A Python pipeline that normalises the four schemas, reconciles and
+              categorises every transaction, then strips transfers and card
+              payments so money moving between my own accounts never reads as
+              expenditure.
+            </dd>
+          </div>
+          <div class="result">
+            <dt>Result</dt>
+            <dd>
+              A year of spending in one view&mdash;published with an audit tally
+              of every transaction it excluded and why, so the total can be
+              checked instead of trusted.
+            </dd>
+          </div>
+        </dl>
+        <p class="note-private">Shown running on synthetic data</p>
+        <div class="tags">
+          <span class="tag">Python</span><span class="tag">data pipeline</span
+          ><span class="tag">reconciliation</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="dash-snap" role="img" aria-label="Dashboard snapshot: 149 investment firms researched, 109 with public 2026 evidence of AI use, 314 sourced findings. Most findings are firm-wide and technology rollouts (132), then research (58) and portfolio management (52).">
+          <div class="ds-t">AI at Investment Managers</div>
+          <div class="ds-k">
+            <div><b>149</b><span>firms researched</span></div>
+            <div><b>109</b><span>with 2026 evidence of AI use</span></div>
+            <div><b>314</b><span>findings, each with a source</span></div>
+          </div>
+          <div class="ds-h">Findings by department</div>
+          <ul aria-hidden="true"><li><span>Firm-wide and tech</span><i style="width:100.0%"></i><em>132</em></li><li><span>Research</span><i style="width:43.9%"></i><em>58</em></li><li><span>Portfolio mgmt</span><i style="width:39.4%"></i><em>52</em></li><li><span>Investment ops</span><i style="width:22.7%"></i><em>30</em></li><li><span>Distribution</span><i style="width:15.2%"></i><em>20</em></li><li><span>Risk and compliance</span><i style="width:15.2%"></i><em>20</em></li><li><span>Trading</span><i style="width:1.5%"></i><em>2</em></li></ul>
+        </div>
+        <h3>Scheduled research agents</h3>
+        <p>
+          A monthly research run that tracks how investment managers are using
+          AI. Agents search the web and LinkedIn for public 2026 evidence at 149
+          firms, grade each finding A to D by how specific its source is, and
+          file it by department. A news sweep and a watch on consultants, AI
+          labs and vendors run alongside, and every finding lands in a dashboard
+          with its source link.
+        </p>
+        <p class="note-private">Snapshot of the live research dashboard, Nov 2026 · public 2026 sources only</p>
+        <div class="tags">
+          <span class="tag">agents</span><span class="tag">research database</span
+          ><span class="tag">dashboard</span>
+        </div>
+      </article>
       <article class="card featured">
         <div class="media">
           <video
@@ -1571,105 +1662,6 @@
         </div>
       </article>
 
-      <article class="card featured">
-        <div class="media">
-          <video
-            src="media/expense-dashboard.mp4"
-            poster="media/expense-dashboard.jpg"
-            autoplay
-            loop
-            muted
-            playsinline
-            preload="metadata"
-            aria-label="Screen recording of the expense dashboard, running on synthetic data"
-          ></video>
-        </div>
-        <h3>Multi-account expense tracker</h3>
-        <dl class="par">
-          <div>
-            <dt>Problem</dt>
-            <dd>
-              Four accounts, four export formats, and no honest view of a year's
-              spending. Categorising by hand collapses at roughly a thousand
-              transactions, and transfers between my own accounts were
-              double-counting as money spent.
-            </dd>
-          </div>
-          <div>
-            <dt>Approach</dt>
-            <dd>
-              A Python pipeline that normalises the four schemas, reconciles and
-              categorises every transaction, then strips transfers and card
-              payments so money moving between my own accounts never reads as
-              expenditure.
-            </dd>
-          </div>
-          <div class="result">
-            <dt>Result</dt>
-            <dd>
-              A year of spending in one view&mdash;published with an audit tally
-              of every transaction it excluded and why, so the total can be
-              checked instead of trusted.
-            </dd>
-          </div>
-        </dl>
-        <p class="note-private">Shown running on synthetic data</p>
-        <div class="tags">
-          <span class="tag">Python</span><span class="tag">data pipeline</span
-          ><span class="tag">reconciliation</span>
-        </div>
-      </article>
-
-      <article class="card">
-        <svg
-          class="dgm"
-          viewBox="0 0 240 84"
-          role="img"
-          aria-label="A Saturday trigger fans out to three research agents, whose findings merge into one ranked brief"
-        >
-          <defs>
-            <marker
-              id="a1"
-              viewBox="0 0 8 8"
-              refX="7"
-              refY="4"
-              markerWidth="5"
-              markerHeight="5"
-              orient="auto"
-            >
-              <path d="M0 1 L7 4 L0 7 z" fill="currentColor" />
-            </marker>
-          </defs>
-          <text x="0" y="10" class="sm">SAT 06:00</text>
-          <circle cx="6" cy="44" r="3" class="hotf" />
-          <path class="ln hot" d="M10 44 H26" />
-          <path class="ln" d="M26 22 V66" />
-          <path class="ln" d="M26 22 H44 M26 44 H44 M26 66 H44" />
-          <rect class="bx" x="44" y="14" width="52" height="16" rx="2" />
-          <rect class="bx" x="44" y="36" width="52" height="16" rx="2" />
-          <rect class="bx" x="44" y="58" width="52" height="16" rx="2" />
-          <text x="70" y="25" text-anchor="middle" class="sm">news</text>
-          <text x="70" y="47" text-anchor="middle" class="sm">viral</text>
-          <text x="70" y="69" text-anchor="middle" class="sm">money</text>
-          <path class="ln" d="M96 22 H114 M96 44 H114 M96 66 H114" />
-          <path class="ln" d="M114 22 V66" />
-          <path class="ln" d="M114 44 H130" marker-end="url(#a1)" />
-          <rect class="bx" x="136" y="34" width="66" height="20" rx="2" />
-          <text x="169" y="47" text-anchor="middle" class="sm">
-            ranked brief
-          </text>
-        </svg>
-        <h3>Scheduled research agents</h3>
-        <p>
-          Autonomous weekly runs that gather AI and finance developments, judge
-          what's actually worth covering, and hand back a briefed topic list
-          rather than a pile of links.
-        </p>
-        <div class="tags">
-          <span class="tag">agents</span><span class="tag">automation</span>
-        </div>
-      </article>
-
       <article class="card">
         <svg
           class="dgm"
@@ -1715,6 +1707,68 @@
         <div class="tags">
           <span class="tag">Claude Code</span><span class="tag">video</span
           ><span class="tag">scheduling</span>
+        </div>
+      </article>
+
+            <article class="card">
+        <svg class="dgm" viewBox="0 0 240 84" role="img" aria-label="YouTube, Instagram and Reddit feed a hook bank, which feeds up to ten ranked recording guides">
+          <defs><marker id="n1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 1 L7 4 L0 7 z" fill="currentColor" /></marker></defs>
+          <text x="0" y="10" class="sm">SATURDAY</text>
+          <rect class="bx" x="0" y="16" width="56" height="16" rx="2" />
+          <rect class="bx" x="0" y="38" width="56" height="16" rx="2" />
+          <rect class="bx" x="0" y="60" width="56" height="16" rx="2" />
+          <text x="28" y="27" text-anchor="middle" class="sm">YouTube</text>
+          <text x="28" y="49" text-anchor="middle" class="sm">Instagram</text>
+          <text x="28" y="71" text-anchor="middle" class="sm">Reddit</text>
+          <path class="ln" d="M56 24 H72 M56 46 H72 M56 68 H72" />
+          <path class="ln" d="M72 24 V68" />
+          <path class="ln" d="M72 46 H88" marker-end="url(#n1)" />
+          <rect class="bx" x="94" y="37" width="56" height="18" rx="2" />
+          <text x="122" y="49" text-anchor="middle" class="sm">hook bank</text>
+          <path class="ln" d="M150 46 H166" marker-end="url(#n1)" />
+          <rect class="bx hot" x="172" y="35" width="66" height="22" rx="2" />
+          <text x="205" y="49" text-anchor="middle" class="sm hott">10 guides</text>
+        </svg>
+        <h3>Weekly content research assistant</h3>
+        <p>
+          A Saturday run that studies what's working on YouTube, Instagram and
+          Reddit, keeps every hook it finds in a tagged hook bank, and hands back
+          up to ten ranked recording guides. Small helper agents screen the
+          reels and tag the hooks, while scripts do the counting, so every number
+          comes from data rather than a guess. Nothing publishes without my yes.
+        </p>
+        <div class="tags">
+          <span class="tag">Claude Code</span><span class="tag">multi-agent</span
+          ><span class="tag">scheduling</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <svg class="dgm" viewBox="0 0 240 84" role="img" aria-label="Each morning, eight subreddits are read into one digest, which goes to email and to the weekly research run">
+          <defs><marker id="n2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 1 L7 4 L0 7 z" fill="currentColor" /></marker></defs>
+          <text x="0" y="10" class="sm">DAILY 08:00</text>
+          <circle cx="8" cy="30" r="3" class="bx" /><circle cx="20" cy="30" r="3" class="bx" /><circle cx="32" cy="30" r="3" class="bx" /><circle cx="44" cy="30" r="3" class="bx" />
+          <circle cx="8" cy="46" r="3" class="bx" /><circle cx="20" cy="46" r="3" class="bx" /><circle cx="32" cy="46" r="3" class="bx" /><circle cx="44" cy="46" r="3" class="bx" />
+          <text x="26" y="66" text-anchor="middle" class="sm">8 subreddits</text>
+          <path class="ln" d="M52 38 H74" marker-end="url(#n2)" />
+          <rect class="bx hot" x="80" y="28" width="58" height="20" rx="2" />
+          <text x="109" y="41" text-anchor="middle" class="sm hott">digest</text>
+          <path class="ln" d="M138 38 H154 M154 22 V58 M154 22 H170 M154 58 H170" />
+          <rect class="bx" x="176" y="14" width="62" height="16" rx="2" />
+          <rect class="bx" x="176" y="50" width="62" height="16" rx="2" />
+          <text x="207" y="25" text-anchor="middle" class="sm">email</text>
+          <text x="207" y="61" text-anchor="middle" class="sm">Saturday run</text>
+        </svg>
+        <h3>Daily Reddit AI digest</h3>
+        <p>
+          A scheduled job that reads eight AI subreddits each morning and sends
+          me a short digest of what people are complaining about, excited about
+          and building. The saved digests feed the weekly research run, so real
+          frustrations become content angles.
+        </p>
+        <div class="tags">
+          <span class="tag">Claude Code</span><span class="tag">scheduling</span
+          ><span class="tag">research</span>
         </div>
       </article>
 
@@ -1937,7 +1991,6 @@
         <p class="note-private">
           Nexora is a fictional product · every figure invented
         </p>
-        <a class="card-link" href="nexora/">Open the page →</a>
         <div class="tags">
           <span class="tag">HTML/CSS</span><span class="tag">design spec</span
           ><span class="tag">motion</span>
